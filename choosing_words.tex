@@ -1,0 +1,29 @@
+\documentclass[11pt]{article}
+
+\input{../../steve.the.bayesian@gmail.com - Google Drive/My Drive/latex/steve.tex}
+
+\title{Choosing words in Wordle}
+\author{Steven L. Scott}
+\date{June 6, 2022}
+
+\begin{document}
+\maketitle
+
+Given a dictionary containing strings of 5 letters, guess the dictionary element
+as quickly as possible, in no more than 6 guesses.
+
+At any point in the game, the probability of successfully guessing the word is
+one over the number of feasible words remaining in the list.  Thus the optimal
+guess is the remaining word that would eliminate as many other words as
+possible.
+
+The ideal word contains a letter contained by half the words on the list.
+
+Two letter patterns can also be used.  'ch', 'sh', or 'ly', 'oo'
+
+Algorithm:
+Choose the best letter.  Find all words containing that letter.  Repeat.
+
+
+
+\end{document}

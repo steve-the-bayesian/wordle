@@ -19,20 +19,33 @@ def letter_distribution(words):
     return relative_frequency
 
 
-def score(word, relative_frequency):
-
-
-
 def suggest(words):
     """
-    If all words have an o in postion 2, then don't penalize the 'o'.
+    Suggest a word from the list of words.  The algorithm is sub-optimal but not
+    bad.  Given a set of input words, find the letter with the relative
+    frequency closest to 0.5.
 
-    Look for common multi-letter patterns like "ch" or "ing".
+    TODO: Look for common multi-letter patterns like "ch" or "ing".
     """
+    if len(words) == 1:
+        return words[0]
+
     relative_frequency = letter_distribution(words)
-    letter_score = .5 - (.5 - relative_frequency).abs()
-    word_scores = [np.prod(letter_score[list(set(word))]) for word in words]
-    return pd.Series(word_scores, index=words)
+    if np.sum(relative_frequency == 1) >= 5:
+        # If there are 5 or more letters that occur in every word then choose a
+        # word randomly from the list.  This gets around the problem of 5
+        # optimal letters in different orders.  'cater' and 'crate' for example.
+        return np.random.choice(words)
+
+    letter_score = (.5 - relative_frequency).abs().sort_values()
+    best_letter_candidates = letter_score[letter_score == letter_score[0]].index
+    best_letter = np.random.choice(best_letter_candidates)
+
+    new_words = [x for x in words if best_letter in x]
+    if len(new_words) == 1:
+        return new_words[0]
+    else:
+        return suggest(new_words)
 
 
 class WordleFilter:
