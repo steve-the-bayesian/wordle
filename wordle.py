@@ -2,8 +2,6 @@ from collections import Counter
 import pandas as pd
 import numpy as np
 
-import pdb
-
 
 def letter_distribution(words):
     """
@@ -31,7 +29,7 @@ def suggest(words):
         return words[0]
 
     relative_frequency = letter_distribution(words)
-    if np.sum(relative_frequency == 1) >= 5:
+    if np.all(relative_frequency == 1):
         # If there are 5 or more letters that occur in every word then choose a
         # word randomly from the list.  This gets around the problem of 5
         # optimal letters in different orders.  'cater' and 'crate' for example.
@@ -46,6 +44,28 @@ def suggest(words):
         return new_words[0]
     else:
         return suggest(new_words)
+
+
+def score(word, right_word):
+    if len(word) != len(right_word):
+        raise Exception(f"{word} is the wrong length.")
+
+    ans = []
+    for pos, letter in enumerate(word):
+        pass
+    return ans
+
+
+def play(right_word):
+    # This is work in progress.  I need to collect the information from wrong
+    # words.
+    filter = WordleFilter()
+    if right_word not in filter.words:
+        raise Exception(f"{right_word} is not in the list of words.")
+
+    word = suggest(filter.words)
+    word_score = score(word, right_word)
+    return word_score
 
 
 class WordleFilter:
